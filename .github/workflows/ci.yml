@@ -2,19 +2,22 @@ name: Build
 
 on: [push]
 
+.llvm: &llvm
+  llvm_version: ['10.x', '11.x']
+  llvm_repo_url: ['https://github.com/llvm/llvm-project.git']
+
 jobs:
   build:
     name: Build
 
     strategy:
       matrix:
+        <<: *llvm
         target: [
           { id: 'linux-amd64', os: 'ubuntu-latest' },
           { id: 'darwin-amd64', os: 'macos-latest' },
           { id: 'windows-amd64', os: 'windows-latest' },
         ]
-        llvm_version: ['10.x', '11.x']
-        llvm_repo_url: ['https://github.com/llvm/llvm-project.git']
       fail-fast: true
 
     runs-on: ${{ matrix.target.os }}
@@ -78,7 +81,7 @@ jobs:
 
     strategy:
       matrix:
-        llvm_version: ['10.x', '11.x']
+        <<: *llvm
 
     steps:
       - name: Download the Artifacts
